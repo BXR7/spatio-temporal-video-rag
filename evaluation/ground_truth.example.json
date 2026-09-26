@@ -1,0 +1,15 @@
+{
+  "schema_version": "1",
+  "dataset": "replace-with-annotated-dataset",
+  "cases": [
+    {
+      "case_id": "video-id-query-id",
+      "video_id": "annotated-video",
+      "query": "annotated query",
+      "relevant_intervals": [[0.0, 1.0]],
+      "temporal_relation": "none",
+      "annotator_ids": ["annotator-a", "annotator-b"],
+      "notes": "Human annotation only; do not copy model output here."
+    }
+  ]
+}
