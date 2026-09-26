@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+
+# Runtime indexes, databases, processed media, and reports
+storage/qdrant_db/
+storage/*.db
+storage/*.json
+storage/processed/
+storage/audio/
+storage/keyframes/
+storage/metrics/
+*.sqlite
+*.sqlite3
+
+# Model and tool caches
+.cache/
+.huggingface/
+transformers_cache/
+
+# Local notebook/runtime artifacts
+.ipynb_checkpoints/
+/kaggle/
+/content/
+
+# Large generated media
+assets/generated/
+*.wav
+*.jpg
+*.jpeg
+*.png
