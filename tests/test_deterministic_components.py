@@ -4,6 +4,7 @@ from api.schemas import IngestRequest, SearchQueryRequest, StrictSearchResponse
 from evaluation.metrics import evaluate_predictions, temporal_iou
 from search.confidence import ConfidenceCalculator
 from search.query_understanding import FastQueryUnderstander
+from search.refiner import TimestampRefiner
 from search.temporal_reasoner import TemporalReasoner
 
 
@@ -61,3 +62,23 @@ def test_schema_validation():
     assert IngestRequest(video_path="clip.mp4").video_id == "default_video"
     with pytest.raises(Exception):
         StrictSearchResponse(start_timestamp="bad", end_timestamp="bad")
+
+
+@pytest.mark.parametrize(
+    ("seconds", "expected"),
+    [
+        (12.3456, "00:00:12.346"),
+        (59.9996, "00:01:00.000"),
+        (3599.9996, "01:00:00.000"),
+        (0.0, "00:00:00.000"),
+        (-2.5, "00:00:00.000"),
+    ],
+)
+def test_timestamp_formatting_normalizes_rounding_carries(seconds, expected):
+    assert TimestampRefiner.format_timestamp(seconds) == expected
+
+
+def test_api_and_package_versions_are_consistent():
+    import api.main
+
+    assert api.main.app.version == "0.1.0"

@@ -29,7 +29,7 @@ app = FastAPI(
     description=(
         "Visual, speech, OCR, spatial grounding, and temporal reasoning"
     ),
-    version="1.0.0",
+    version="0.1.0",
 )
 
 # Lightweight objects only. No neural model is loaded during import.

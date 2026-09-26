@@ -2,7 +2,7 @@
 
 A research prototype that retrieves precise moments from video by combining **speech, OCR, visual embeddings, spatial evidence, and temporal relations**.
 
-> **Status:** source-extracted and testable on a dedicated engineering branch. Full ingestion/search requires heavy ML dependencies, model downloads, FFmpeg, and compatible CUDA hardware. Current evidence is fixture-specific functional validation, not a retrieval-accuracy benchmark.
+> **Status:** the implementation is extracted into committed Python packages, and deterministic components are locally testable. Full ingestion/search requires heavy ML dependencies, model downloads, FFmpeg, and compatible CUDA hardware. Current evidence is fixture-specific functional validation, not a retrieval-accuracy benchmark.
 
 ## What it does
 
@@ -35,8 +35,22 @@ See the [verified architecture](docs/architecture.md) for component boundaries.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+# Development/tests: installs dependencies but does not download model weights.
 pip install -e '.[dev]'
-# Install PyTorch separately for the host's CUDA version.
+pytest -q
+```
+
+For a full model-backed runtime on a fresh environment, install PyTorch **before** the project dependencies. Use the official selector for the host's CUDA version; no universal CUDA command is assumed here:
+
+```text
+1. Install PyTorch using https://pytorch.org/get-started/locally/
+2. Install the project dependencies with: pip install -e '.[dev]'
+```
+
+Then continue with:
+
+```bash
+pip install -e '.[dev]'
 cp .env.example .env
 export VIDEO_RAG_VIDEO_PATH="$PWD/docker_in_100s.mp4"
 uvicorn api.main:app --host 0.0.0.0 --port 8000
