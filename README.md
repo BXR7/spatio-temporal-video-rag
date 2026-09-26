@@ -32,28 +32,31 @@ See the [verified architecture](docs/architecture.md) for component boundaries.
 
 ## Quick start
 
+### Development and deterministic tests
+
+This path installs project dependencies but does not download model weights:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-# Development/tests: installs dependencies but does not download model weights.
 pip install -e '.[dev]'
 pytest -q
 ```
 
-For a full model-backed runtime on a fresh environment, install PyTorch **before** the project dependencies. Use the official selector for the host's CUDA version; no universal CUDA command is assumed here:
+### Full model-backed runtime
+
+On a fresh environment, use this order. Install PyTorch first using the official selector for the host's CUDA version; no universal CUDA command is assumed here.
 
 ```text
-1. Install PyTorch using https://pytorch.org/get-started/locally/
-2. Install the project dependencies with: pip install -e '.[dev]'
-```
-
-Then continue with:
-
-```bash
-pip install -e '.[dev]'
-cp .env.example .env
-export VIDEO_RAG_VIDEO_PATH="$PWD/docker_in_100s.mp4"
-uvicorn api.main:app --host 0.0.0.0 --port 8000
+1. Create and activate the virtual environment as shown above.
+2. Install PyTorch using https://pytorch.org/get-started/locally/.
+3. Install the project dependencies once:
+   pip install -e '.[dev]'
+4. Copy and configure the environment:
+   cp .env.example .env
+   export VIDEO_RAG_VIDEO_PATH="$PWD/docker_in_100s.mp4"
+5. Start the API:
+   uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
 In another shell:

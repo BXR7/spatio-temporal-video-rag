@@ -1,3 +1,6 @@
+import re
+from pathlib import Path
+
 import pytest
 
 from api.schemas import IngestRequest, SearchQueryRequest, StrictSearchResponse
@@ -81,4 +84,16 @@ def test_timestamp_formatting_normalizes_rounding_carries(seconds, expected):
 def test_api_and_package_versions_are_consistent():
     import api.main
 
-    assert api.main.app.version == "0.1.0"
+    project_file = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    project_section = re.search(
+        r"(?ms)^\[project\]\s+(.*?)(?=^\[|\Z)",
+        project_file.read_text(encoding="utf-8"),
+    )
+    assert project_section is not None
+    project_version = re.search(
+        r'^version\s*=\s*["\']([^"\']+)["\']\s*$',
+        project_section.group(1),
+        re.MULTILINE,
+    )
+    assert project_version is not None
+    assert api.main.app.version == project_version.group(1)
